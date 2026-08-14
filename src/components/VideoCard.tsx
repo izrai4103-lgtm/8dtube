@@ -20,12 +20,10 @@ export default function VideoCard({
     const r = el.getBoundingClientRect();
     const px = (e.clientX - r.left) / r.width - 0.5;
     const py = (e.clientY - r.top) / r.height - 0.5;
-    el.style.transform = `perspective(900px) rotateY(${px * 10}deg) rotateX(${
-      -py * 10
-    }deg) translateZ(8px)`;
-    el.style.boxShadow = `0 24px 50px -20px rgba(0,0,0,0.75), 0 0 40px -12px ${
-      px > 0 ? "rgba(34,211,238,0.35)" : "rgba(232,121,249,0.35)"
-    }`;
+    el.style.transform = `perspective(900px) rotateY(${px * 6}deg) rotateX(${
+      -py * 6
+    }deg)`;
+    el.style.boxShadow = "0 16px 40px -16px rgba(0,0,0,0.8)";
   };
 
   const onLeave = () => {
@@ -40,46 +38,39 @@ export default function VideoCard({
       ref={wrapRef}
       onMouseMove={onMove}
       onMouseLeave={onLeave}
-      className="group transition-transform duration-200 will-change-transform"
+      className="transition-transform duration-200 will-change-transform"
       style={{ transformStyle: "preserve-3d" }}
     >
       <Link href={`/watch?v=${video.id}`} className="block">
-        <div
-          className={`relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 ${
-            row ? "aspect-video" : "aspect-video"
-          }`}
-        >
+        <div className="relative aspect-video overflow-hidden rounded-xl bg-black">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={thumbnailOf(video)}
             alt={video.title}
             loading="lazy"
-            className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+            className="h-full w-full object-cover"
           />
           {video.duration ? (
-            <span className="absolute bottom-2 right-2 rounded-md bg-black/80 px-1.5 py-0.5 text-[11px] font-semibold text-white">
+            <span className="absolute right-1.5 bottom-1.5 rounded bg-black/80 px-1 py-0.5 text-xs font-medium text-white">
               {formatDuration(video.duration)}
             </span>
           ) : null}
-          <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-tr from-cyan-500/10 via-transparent to-fuchsia-500/10 opacity-0 transition group-hover:opacity-100" />
         </div>
 
-        <div className="mt-2.5 flex gap-3">
-          <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-white/15 bg-gradient-to-br from-cyan-500/30 to-fuchsia-500/30 text-xs font-bold text-white/80">
-            {(video.channelTitle || "?").slice(0, 1).toUpperCase()}
-          </div>
-          <div className="min-w-0">
-            <h3
-              className={`line-clamp-2 text-sm font-semibold leading-snug text-white ${
-                row ? "" : ""
-              }`}
-            >
+        <div className={`mt-2.5 flex gap-3 ${row ? "" : ""}`}>
+          {!row && (
+            <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white/10 text-xs font-bold text-white">
+              {(video.channelTitle || "?").slice(0, 1).toUpperCase()}
+            </div>
+          )}
+          <div className="min-w-0 flex-1">
+            <h3 className="line-clamp-2 text-sm font-medium leading-snug text-white">
               {video.title}
             </h3>
-            <p className="mt-0.5 truncate text-xs text-white/50">
+            <p className="mt-0.5 truncate text-xs text-white/60">
               {video.channelTitle}
             </p>
-            <p className="text-xs text-white/50">
+            <p className="text-xs text-white/60">
               {formatCount(video.viewCount)}x ditonton · {timeAgo(video.publishedAt)}
             </p>
           </div>

@@ -1,33 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { CinemaProfile, WatchData } from "@/lib/types";
-import { formatCount, formatDuration, thumbnailOf, timeAgo } from "@/lib/format";
+import { formatCount, timeAgo } from "@/lib/format";
 import VideoCard from "./VideoCard";
 
 export default function WatchView({ data }: { data: WatchData }) {
   const { video, channel, related, comments } = data;
-  const [cinema, setCinema] = useState(false);
   const [profile, setProfile] = useState<CinemaProfile | null>(null);
-  const [loadingCinema, setLoadingCinema] = useState(false);
   const [showDesc, setShowDesc] = useState(false);
 
-  if (!video) {
-    return (
-      <div className="mx-auto max-w-3xl py-20 text-center text-white/60">
-        Video tidak ditemukan.{" "}
-        <a className="text-cyan-300 underline" href="/">
-          Kembali ke beranda
-        </a>
-      </div>
-    );
-  }
-
-  const toggleCinema = async () => {
-    const next = !cinema;
-    setCinema(next);
-    if (next && !profile) {
-      setLoadingCinema(true);
+  useEffect(() => {
+    if (!video) return;
+    let cancelled = false;
+    (async () => {
       try {
         const res = await fetch("/api/tube", {
           method: "POST",
@@ -41,16 +27,30 @@ export default function WatchView({ data }: { data: WatchData }) {
           ok: boolean;
           result?: { profile?: CinemaProfile };
         };
-        if (json.ok && json.result?.profile) setProfile(json.result.profile);
+        if (!cancelled && json.ok && json.result?.profile) {
+          setProfile(json.result.profile);
+        }
       } catch {
-        /* abaikan */
-      } finally {
-        setLoadingCinema(false);
+        /* efek 3D tidak aktif jika gagal */
       }
-    }
-  };
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [video]);
 
-  const playerStyle = cinema && profile
+  if (!video) {
+    return (
+      <div className="mx-auto max-w-3xl py-20 text-center text-white/60">
+        Video tidak ditemukan.{" "}
+        <a className="text-cyan-300 underline" href="/">
+          Kembali ke beranda
+        </a>
+      </div>
+    );
+  }
+
+  const playerStyle = profile
     ? {
         filter: `saturate(${profile.saturate}) contrast(${profile.contrast}) brightness(${profile.brightness}) hue-rotate(${profile.hueRotate}deg)`,
         transform: `perspective(1400px) rotateX(${profile.depth / 8}deg)`,
@@ -62,7 +62,7 @@ export default function WatchView({ data }: { data: WatchData }) {
     <div className="mx-auto flex max-w-[1700px] flex-col gap-6 px-4 py-4 xl:flex-row">
       <div className="min-w-0 flex-1">
         <div
-          className="relative aspect-video overflow-hidden rounded-2xl border border-white/10 bg-black transition-all duration-500"
+          className="relative aspect-video overflow-hidden rounded-xl bg-black transition-all duration-1000"
           style={playerStyle}
         >
           <iframe
@@ -74,28 +74,7 @@ export default function WatchView({ data }: { data: WatchData }) {
           />
         </div>
 
-        <div className="mt-3 flex flex-wrap items-center gap-2">
-          <button
-            onClick={toggleCinema}
-            className={`rounded-full px-4 py-1.5 text-sm transition ${
-              cinema
-                ? "bg-gradient-to-r from-cyan-500 to-fuchsia-500 text-white shadow-[0_0_24px_rgba(34,211,238,0.5)]"
-                : "border border-white/15 bg-white/5 text-white/80 hover:border-cyan-400/50"
-            }`}
-          >
-            🎬 8D Cinema AI {cinema ? "AKTIF" : "MATI"}
-          </button>
-          {profile && (
-            <span className="text-xs text-white/50">
-              {profile.mode} — {profile.note}
-            </span>
-          )}
-          {loadingCinema && (
-            <span className="text-xs text-white/50">Menyiapkan profil HDR 3D…</span>
-          )}
-        </div>
-
-        <h1 className="mt-3 text-lg leading-6 font-semibold text-white">
+        <h1 className="mt-4 text-lg leading-6 font-semibold text-white">
           {video.title}
         </h1>
 
@@ -109,48 +88,62 @@ export default function WatchView({ data }: { data: WatchData }) {
                 className="h-10 w-10 rounded-full border border-white/20"
               />
             ) : (
-              <div className="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-cyan-500/40 to-fuchsia-500/40 text-white">
-                {(channel?.title ?? "?").slice(0, 1).toUpperCase()}
+              <div className="grid h-10 w-10 place-items-center rounded-full bg-white/10 text-sm font-bold text-white">
+                {(channel?.title ?? video.channelTitle ?? "?").slice(0, 1).toUpperCase()}
               </div>
             )}
             <div>
               <p className="text-sm font-semibold text-white">
                 {channel?.title ?? video.channelTitle}
               </p>
-              <p className="text-xs text-white/50">
-                {channel ? `${formatCount(channel.subscriberCount)} subscriber` : ""}
+              <p className="text-xs text-white/60">
+                {channel ? `${formatCount(channel.subscriberCount)} pelanggan` : ""}
               </p>
             </div>
+            <button className="ml-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-white/90">
+              BERLANGGANAN
+            </button>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-sm text-white/80">
+          <div className="flex flex-wrap items-center gap-2 text-sm">
+            <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 font-medium text-white">
               👍 {formatCount(video.likeCount)}
             </span>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-sm text-white/80">
-              👁 {formatCount(video.viewCount)}x
+            <span className="grid h-10 w-10 place-items-center rounded-full bg-white/10 text-white">
+              👎
             </span>
-            <span className="rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-sm text-white/80">
-              {timeAgo(video.publishedAt)}
+            <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 font-medium text-white">
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
+              </svg>
+              Bagikan
+            </span>
+            <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 font-medium text-white">
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+              Simpan
             </span>
           </div>
         </div>
 
         <button
           onClick={() => setShowDesc((s) => !s)}
-          className="mt-3 w-full rounded-2xl border border-white/10 bg-white/5 p-4 text-left text-sm text-white/70 transition hover:border-cyan-400/40"
+          className="mt-3 w-full rounded-xl bg-white/5 p-3 text-left text-sm text-white/85 transition hover:bg-white/10"
         >
-          {showDesc ? video.description : video.description?.slice(0, 180)}
-          {video.description?.length > 180 && (
-            <span className="ml-1 text-cyan-300">
-              {showDesc ? " (tutup)" : "… selengkapnya"}
+          <p className={showDesc ? "" : "line-clamp-2"}>
+            {video.description || video.title}
+          </p>
+          {video.description && video.description.length > 180 && (
+            <span className="mt-1 inline-block font-semibold text-white">
+              {showDesc ? "…lebih sedikit" : "…selengkapnya"}
             </span>
           )}
         </button>
 
         <section className="mt-6">
           <h2 className="mb-3 text-base font-semibold text-white">
-            💬 {comments.length} Komentar
+            {comments.length} Komentar
           </h2>
           <div className="space-y-4">
             {comments.map((c) => (
@@ -177,7 +170,6 @@ export default function WatchView({ data }: { data: WatchData }) {
       </div>
 
       <aside className="w-full shrink-0 xl:w-[380px]">
-        <h2 className="mb-3 text-base font-semibold text-white">Terhubung</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-1">
           {related.map((v) => (
             <VideoCard key={v.id} video={v} row />

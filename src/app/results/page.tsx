@@ -23,14 +23,9 @@ export default async function Results({
   }
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-6">
-      <h1 className="text-sm text-white/60">
-        Hasil untuk{" "}
-        <span className="font-semibold text-white">&quot;{q}&quot;</span>
-      </h1>
-
+    <div className="mx-auto max-w-[1700px] px-4 py-4">
       {error && (
-        <div className="mt-4 rounded-2xl border border-red-400/30 bg-red-500/10 p-4 text-sm text-red-200">
+        <div className="rounded-xl border border-red-400/30 bg-red-500/10 p-4 text-sm text-red-200">
           {error}
         </div>
       )}
@@ -44,7 +39,7 @@ export default async function Results({
         </p>
       )}
 
-      <div className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-x-4 gap-y-7 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {items.map((v) => (
           <VideoCard key={v.id} video={v} />
         ))}

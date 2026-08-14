@@ -14,9 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "8DTUBE — Video Populer dalam 3D",
-  description:
-    "8DTUBE adalah website video seperti YouTube dengan tampilan 3D, terhubung langsung dengan eight-dee-tube-clone.lovable.app",
+  title: "8DTUBE",
+  description: "8DTUBE — situs video 3D seperti YouTube.",
 };
 
 export default function RootLayout({
@@ -27,7 +26,7 @@ export default function RootLayout({
       lang="id"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-dvh bg-[#0a0a10] text-white">
+      <body className="min-h-dvh bg-[#0f0f0f] text-white">
         <Navbar />
         <main className="relative z-10">{children}</main>
       </body>

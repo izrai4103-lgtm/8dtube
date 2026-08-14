@@ -5,14 +5,14 @@ import type { Category, Video } from "@/lib/types";
 import VideoCard from "./VideoCard";
 
 const ID_CHIPS: { id: string; title: string }[] = [
-  { id: "q:musik indonesia", title: "🎵 Musik" },
-  { id: "q:vlog indonesia", title: "📹 Vlog" },
-  { id: "q:kuliner indonesia", title: "🍜 Kuliner" },
-  { id: "q:game mobile", title: "🎮 Gaming" },
-  { id: "q:komedi indonesia", title: "😂 Komedi" },
-  { id: "q:berita hari ini", title: "📰 Berita" },
-  { id: "q:dangdut", title: "💃 Dangdut" },
-  { id: "q:lofi indonesia", title: "🌙 Lofi" },
+  { id: "q:musik indonesia", title: "Musik" },
+  { id: "q:vlog indonesia", title: "Vlog" },
+  { id: "q:kuliner indonesia", title: "Kuliner" },
+  { id: "q:game mobile", title: "Gaming" },
+  { id: "q:komedi indonesia", title: "Komedi" },
+  { id: "q:berita hari ini", title: "Berita" },
+  { id: "q:dangdut", title: "Dangdut" },
+  { id: "q:lofi indonesia", title: "Lofi" },
 ];
 
 const ID_CATEGORY_TITLES: Record<string, string> = {
@@ -41,7 +41,7 @@ export default function VideoGrid({
   categories: Category[];
   defaultQuery?: string;
 }) {
-  const [active, setActive] = useState<string>("id");
+  const [active, setActive] = useState<string>("all");
   const [videos, setVideos] = useState<Video[]>(initialVideos);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -53,15 +53,12 @@ export default function VideoGrid({
       setError("");
       try {
         let body: { fn: string; data: Record<string, unknown> };
-        if (chipId === "id") {
+        if (chipId === "all") {
           body = { fn: "search", data: { q: defaultQuery } };
         } else if (chipId.startsWith("q:")) {
           body = { fn: "search", data: { q: chipId.slice(2) } };
         } else {
-          body = {
-            fn: "home",
-            data: chipId ? { categoryId: chipId } : {},
-          };
+          body = { fn: "home", data: chipId ? { categoryId: chipId } : {} };
         }
         const res = await fetch("/api/tube", {
           method: "POST",
@@ -85,7 +82,7 @@ export default function VideoGrid({
   );
 
   const chips = [
-    { id: "id", title: "🇮🇩 Indonesia" },
+    { id: "all", title: "Semua" },
     ...ID_CHIPS,
     ...categories.map((c) => ({
       id: c.id,
@@ -95,15 +92,15 @@ export default function VideoGrid({
 
   return (
     <div>
-      <div className="sticky top-16 z-30 flex gap-2.5 overflow-x-auto bg-transparent py-3 [scrollbar-width:none]">
+      <div className="sticky top-14 z-30 -mx-1 flex gap-2 overflow-x-auto bg-[#0f0f0f]/95 px-1 py-3 [scrollbar-width:none]">
         {chips.map((c) => (
           <button
             key={c.id}
             onClick={() => pick(c.id)}
-            className={`shrink-0 rounded-full px-4 py-1.5 text-sm whitespace-nowrap transition ${
+            className={`h-8 shrink-0 rounded-lg px-3 text-sm whitespace-nowrap transition ${
               active === c.id
-                ? "bg-gradient-to-r from-cyan-500 to-fuchsia-500 text-white shadow-[0_0_20px_rgba(34,211,238,0.4)]"
-                : "border border-white/15 bg-white/5 text-white/70 hover:border-cyan-400/50 hover:text-white"
+                ? "bg-white font-medium text-black"
+                : "bg-white/10 text-white/80 hover:bg-white/20 hover:text-white"
             }`}
           >
             {c.title}
@@ -112,7 +109,7 @@ export default function VideoGrid({
       </div>
 
       {error && (
-        <div className="rounded-2xl border border-red-400/30 bg-red-500/10 p-4 text-sm text-red-200">
+        <div className="rounded-xl border border-red-400/30 bg-red-500/10 p-4 text-sm text-red-200">
           {error}
         </div>
       )}
@@ -125,7 +122,7 @@ export default function VideoGrid({
 
       {loading && (
         <div className="py-10 text-center text-sm text-white/50">
-          Memuat dalam 3D…
+          Memuat…
         </div>
       )}
     </div>

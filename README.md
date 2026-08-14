@@ -1,14 +1,14 @@
 # 8DTUBE 🎥
 
 Website video **seperti YouTube dengan tampilan 3D**, bernama **8DTUBE**.
-Semua video + fitur (beranda, kategori, pencarian, pemutar, komentar, shorts, 8D Cinema AI) **dimuat langsung dari**
+Semua video + fitur (beranda, kategori, pencarian, pemutar, komentar, shorts, 8D Cinema otomatis) **dimuat langsung dari**
 [eight-dee-tube-clone.lovable.app](https://eight-dee-tube-clone.lovable.app) melalui proxy server-ke-server.
 
 ## Stack
 
 - **[Next.js](https://nextjs.org)** — framework/template open-source dari `vercel/next.js` (100k+ stars di GitHub)
-- **Three.js** — latar belakang 3D (bintang, cincin logo 8D, parallax mouse)
-- **Tailwind CSS 4** — styling + efek 3D CSS (kartu tilt, glassmorphism, neon)
+- **Three.js** — efek 3D
+- **Tailwind CSS 4** — styling + efek 3D CSS (kartu tilt)
 - **seroval** — dekode protokol server-function TanStack Start milik situs asli
 
 ## Cara kerja koneksi ke situs asli
@@ -39,7 +39,7 @@ LOVABLE_SOURCE=https://eight-dee-tube-clone.lovable.app npm run dev
 | --- | --- |
 | `/` | Beranda: kategori + video trending |
 | `/results?q=...` | Pencarian video |
-| `/watch?v=...` | Pemutar video, channel, komentar, video terkait, **8D Cinema AI** |
+| `/watch?v=...` | Pemutar video, channel, komentar, video terkait, **8D Cinema otomatis** |
 | `/shorts` | Feed Shorts vertikal autoplay |
 
 ## Deploy
@@ -49,7 +49,3 @@ Deploy otomatis ke Vercel:
 ```bash
 npx vercel --prod
 ```
-
-## Halaman Open Source
-
-`/open-source` menampilkan **5 template** (freeCodeCamp, Developer Roadmap, Free Programming Books, Awesome, Public APIs) dan **4 tools** (React, Vue.js, TensorFlow, VS Code) dengan rating ~200K bintang — jumlah bintang diambil live dari GitHub API.
