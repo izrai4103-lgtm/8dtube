@@ -1,5 +1,7 @@
 # 8DTUBE 🎥
 
+**Tampilan mobile-only** (aplikasi), UI mengikuti pola template open-source **shadcn/ui** (121K+ bintang, MIT) + **Tailwind CSS** (97K+ bintang, MIT).
+
 Website video **seperti YouTube dengan tampilan 3D**, bernama **8DTUBE**.
 Semua video + fitur (beranda, kategori, pencarian, pemutar, komentar, shorts, 8D Cinema otomatis) **dimuat langsung dari**
 [eight-dee-tube-clone.lovable.app](https://eight-dee-tube-clone.lovable.app) melalui proxy server-ke-server.
@@ -8,7 +10,8 @@ Semua video + fitur (beranda, kategori, pencarian, pemutar, komentar, shorts, 8D
 
 - **[Next.js](https://nextjs.org)** — framework/template open-source dari `vercel/next.js` (100k+ stars di GitHub)
 - **Three.js** — efek 3D
-- **Tailwind CSS 4** — styling + efek 3D CSS (kartu tilt)
+- **Tailwind CSS 4** — styling mobile-first + efek 3D CSS (kartu tilt)
+- **shadcn/ui** — pola komponen mobile (bottom nav, tombol sentuh besar) untuk acuan desain
 - **seroval** — dekode protokol server-function TanStack Start milik situs asli
 
 ## Cara kerja koneksi ke situs asli

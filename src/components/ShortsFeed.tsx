@@ -6,7 +6,7 @@ import { formatCount, thumbnailOf } from "@/lib/format";
 
 function ShortItem({ video, active }: { video: Video; active: boolean }) {
   return (
-    <div className="flex h-[calc(100dvh-4rem)] snap-start items-center justify-center gap-4 px-4">
+    <div className="flex h-[calc(100dvh-7.5rem)] snap-start items-center justify-center gap-4 px-4">
       <div
         className={`relative h-full w-full max-w-[420px] overflow-hidden rounded-3xl border border-white/15 bg-black shadow-[0_24px_60px_-20px_rgba(0,0,0,0.8)] transition-all duration-500 ${
           active ? "max-w-none rounded-none" : ""
@@ -66,7 +66,7 @@ export default function ShortsFeed({ shorts }: { shorts: Video[] }) {
   return (
     <div
       ref={containerRef}
-      className="h-[calc(100dvh-4rem)] snap-y snap-mandatory overflow-y-auto"
+      className="h-[calc(100dvh-7.5rem)] snap-y snap-mandatory overflow-y-auto"
     >
       {shorts.map((s, i) => (
         <div key={`${s.id}-${i}`} data-index={i}>

@@ -92,7 +92,7 @@ export default function VideoGrid({
 
   return (
     <div>
-      <div className="sticky top-14 z-30 -mx-1 flex gap-2 overflow-x-auto bg-[#0f0f0f]/95 px-1 py-3 [scrollbar-width:none]">
+      <div className="sticky top-12 z-30 -mx-1 flex gap-2 overflow-x-auto bg-[#0f0f0f]/95 px-1 py-3 [scrollbar-width:none]">
         {chips.map((c) => (
           <button
             key={c.id}
@@ -114,7 +114,7 @@ export default function VideoGrid({
         </div>
       )}
 
-      <div className="grid grid-cols-1 gap-x-4 gap-y-7 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4">
         {videos.map((v) => (
           <VideoCard key={v.id} video={v} />
         ))}

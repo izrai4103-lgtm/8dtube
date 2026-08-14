@@ -22,7 +22,7 @@ export default async function Shorts() {
 
   if (shorts.length === 0) {
     return (
-      <div className="grid h-[calc(100dvh-4rem)] place-items-center px-4 text-center">
+      <div className="grid h-[calc(100dvh-7.5rem)] place-items-center px-4 text-center">
         <div>
           <p className="text-lg text-white/70">Belum ada Shorts tersedia.</p>
           <a href="/" className="mt-2 inline-block text-sm text-cyan-300 underline">

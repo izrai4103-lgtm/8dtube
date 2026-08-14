@@ -20,10 +20,10 @@ export default function VideoCard({
     const r = el.getBoundingClientRect();
     const px = (e.clientX - r.left) / r.width - 0.5;
     const py = (e.clientY - r.top) / r.height - 0.5;
-    el.style.transform = `perspective(900px) rotateY(${px * 6}deg) rotateX(${
-      -py * 6
+    el.style.transform = `perspective(900px) rotateY(${px * 4}deg) rotateX(${
+      -py * 4
     }deg)`;
-    el.style.boxShadow = "0 16px 40px -16px rgba(0,0,0,0.8)";
+    el.style.boxShadow = "0 12px 32px -16px rgba(0,0,0,0.8)";
   };
 
   const onLeave = () => {
@@ -42,39 +42,68 @@ export default function VideoCard({
       style={{ transformStyle: "preserve-3d" }}
     >
       <Link href={`/watch?v=${video.id}`} className="block">
-        <div className="relative aspect-video overflow-hidden rounded-xl bg-black">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={thumbnailOf(video)}
-            alt={video.title}
-            loading="lazy"
-            className="h-full w-full object-cover"
-          />
-          {video.duration ? (
-            <span className="absolute right-1.5 bottom-1.5 rounded bg-black/80 px-1 py-0.5 text-xs font-medium text-white">
-              {formatDuration(video.duration)}
-            </span>
-          ) : null}
-        </div>
-
-        <div className={`mt-2.5 flex gap-3 ${row ? "" : ""}`}>
-          {!row && (
-            <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white/10 text-xs font-bold text-white">
-              {(video.channelTitle || "?").slice(0, 1).toUpperCase()}
+        {row ? (
+          <div className="flex gap-3">
+            <div className="relative aspect-video w-44 shrink-0 overflow-hidden rounded-lg bg-black">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={thumbnailOf(video)}
+                alt={video.title}
+                loading="lazy"
+                className="h-full w-full object-cover"
+              />
+              {video.duration ? (
+                <span className="absolute right-1 bottom-1 rounded bg-black/80 px-1 py-0.5 text-[10px] font-medium text-white">
+                  {formatDuration(video.duration)}
+                </span>
+              ) : null}
             </div>
-          )}
-          <div className="min-w-0 flex-1">
-            <h3 className="line-clamp-2 text-sm font-medium leading-snug text-white">
-              {video.title}
-            </h3>
-            <p className="mt-0.5 truncate text-xs text-white/60">
-              {video.channelTitle}
-            </p>
-            <p className="text-xs text-white/60">
-              {formatCount(video.viewCount)}x ditonton · {timeAgo(video.publishedAt)}
-            </p>
+            <div className="min-w-0 flex-1 py-0.5">
+              <h3 className="line-clamp-2 text-[13px] font-semibold leading-snug text-white">
+                {video.title}
+              </h3>
+              <p className="mt-1 truncate text-xs text-white/60">
+                {video.channelTitle}
+              </p>
+              <p className="text-xs text-white/60">
+                {formatCount(video.viewCount)}x ditonton · {timeAgo(video.publishedAt)}
+              </p>
+            </div>
           </div>
-        </div>
+        ) : (
+          <>
+            <div className="relative aspect-video overflow-hidden rounded-lg bg-black">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={thumbnailOf(video)}
+                alt={video.title}
+                loading="lazy"
+                className="h-full w-full object-cover"
+              />
+              {video.duration ? (
+                <span className="absolute right-1.5 bottom-1.5 rounded bg-black/80 px-1 py-0.5 text-xs font-medium text-white">
+                  {formatDuration(video.duration)}
+                </span>
+              ) : null}
+            </div>
+            <div className="mt-2 flex gap-2.5">
+              <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white/10 text-xs font-bold text-white">
+                {(video.channelTitle || "?").slice(0, 1).toUpperCase()}
+              </div>
+              <div className="min-w-0 flex-1">
+                <h3 className="line-clamp-2 text-[15px] font-semibold leading-snug text-white">
+                  {video.title}
+                </h3>
+                <p className="mt-1 truncate text-xs text-white/60">
+                  {video.channelTitle}
+                </p>
+                <p className="text-xs text-white/60">
+                  {formatCount(video.viewCount)}x ditonton · {timeAgo(video.publishedAt)}
+                </p>
+              </div>
+            </div>
+          </>
+        )}
       </Link>
     </div>
   );

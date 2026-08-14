@@ -23,7 +23,7 @@ export default async function Results({
   }
 
   return (
-    <div className="mx-auto max-w-[1700px] px-4 py-4">
+    <div className="px-3 py-3">
       {error && (
         <div className="rounded-xl border border-red-400/30 bg-red-500/10 p-4 text-sm text-red-200">
           {error}
@@ -39,7 +39,7 @@ export default async function Results({
         </p>
       )}
 
-      <div className="grid grid-cols-1 gap-x-4 gap-y-7 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4">
         {items.map((v) => (
           <VideoCard key={v.id} video={v} />
         ))}

@@ -20,7 +20,7 @@ export default async function Home() {
   }
 
   return (
-    <div className="mx-auto max-w-[1700px] px-4 pt-4 pb-16">
+    <div className="px-3 pt-3">
       <VideoGrid
         initialVideos={videos}
         categories={categories}
