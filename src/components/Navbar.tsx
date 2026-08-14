@@ -59,6 +59,12 @@ export default function Navbar() {
 
         <nav className="hidden shrink-0 items-center gap-3 md:flex">
           <Link
+            href="/open-source"
+            className="rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-sm text-white/80 transition hover:border-purple-400/60 hover:text-white"
+          >
+            Open Source
+          </Link>
+          <Link
             href="/shorts"
             className="rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-sm text-white/80 transition hover:border-fuchsia-400/60 hover:text-white"
           >

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Background3D from "@/components/Background3D";
 import Navbar from "@/components/Navbar";
 
 const geistSans = Geist({
@@ -28,8 +27,7 @@ export default function RootLayout({
       lang="id"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-dvh bg-[#07070d] text-white">
-        <Background3D />
+      <body className="min-h-dvh bg-[#0a0a10] text-white">
         <Navbar />
         <main className="relative z-10">{children}</main>
       </body>

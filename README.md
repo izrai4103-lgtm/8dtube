@@ -49,3 +49,7 @@ Deploy otomatis ke Vercel:
 ```bash
 npx vercel --prod
 ```
+
+## Halaman Open Source
+
+`/open-source` menampilkan **5 template** (freeCodeCamp, Developer Roadmap, Free Programming Books, Awesome, Public APIs) dan **4 tools** (React, Vue.js, TensorFlow, VS Code) dengan rating ~200K bintang — jumlah bintang diambil live dari GitHub API.
