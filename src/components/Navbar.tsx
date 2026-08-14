@@ -62,7 +62,7 @@ export default function Navbar() {
             href="/open-source"
             className="rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-sm text-white/80 transition hover:border-purple-400/60 hover:text-white"
           >
-            Open Source
+            Sumber Terbuka
           </Link>
           <Link
             href="/shorts"

@@ -66,7 +66,7 @@ export default function WatchView({ data }: { data: WatchData }) {
           style={playerStyle}
         >
           <iframe
-            src={`https://www.youtube.com/embed/${video.id}?autoplay=1&rel=0`}
+            src={`https://www.youtube.com/embed/${video.id}?autoplay=1&rel=0&hl=id&gl=ID`}
             title={video.title}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
@@ -83,7 +83,7 @@ export default function WatchView({ data }: { data: WatchData }) {
                 : "border border-white/15 bg-white/5 text-white/80 hover:border-cyan-400/50"
             }`}
           >
-            🎬 8D Cinema AI {cinema ? "ON" : "OFF"}
+            🎬 8D Cinema AI {cinema ? "AKTIF" : "MATI"}
           </button>
           {profile && (
             <span className="text-xs text-white/50">

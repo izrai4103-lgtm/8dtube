@@ -45,7 +45,7 @@ function RepoCard({ repo }: { repo: OpenSourceRepo }) {
           <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-white/60">
             {repo.license}
           </span>
-          <span className="ml-auto text-white/40">Open Source ↗</span>
+          <span className="ml-auto text-white/40">Sumber Terbuka ↗</span>
         </div>
       </div>
     </a>
@@ -61,7 +61,7 @@ export default async function OpenSource() {
     <div className="mx-auto max-w-6xl px-4 py-10">
       <section className="text-center">
         <h1 className="mx-auto max-w-3xl bg-gradient-to-r from-cyan-300 via-fuchsia-400 to-purple-400 bg-clip-text text-3xl font-black tracking-tight text-transparent sm:text-4xl">
-          Open Source 200K+ ⭐
+          Sumber Terbuka 200K+ ⭐
         </h1>
         <p className="mx-auto mt-3 max-w-2xl text-sm text-white/55 sm:text-base">
           Template & tools open-source dengan rating terbesar di GitHub — jumlah
