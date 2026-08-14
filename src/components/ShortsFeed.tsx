@@ -445,9 +445,48 @@ function ShortItem({
   );
 }
 
-export default function ShortsFeed({ shorts }: { shorts: Video[] }) {
+export default function ShortsFeed({
+  initialShorts,
+}: {
+  initialShorts: Video[];
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [shorts, setShorts] = useState<Video[]>(initialShorts);
+  const [loading, setLoading] = useState(initialShorts.length === 0);
   const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    if (initialShorts.length > 0) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/tube", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ fn: "shorts" }),
+        });
+        const json = (await res.json()) as {
+          ok: boolean;
+          result?: {
+            local?: { items?: Video[] };
+            feed?: { items?: Video[] };
+          };
+        };
+        if (cancelled) return;
+        const local = json.ok ? (json.result?.local?.items ?? []) : [];
+        const feed = json.ok ? (json.result?.feed?.items ?? []) : [];
+        const list = [...local, ...feed];
+        if (list.length) setShorts(list);
+      } catch {
+        /* biarkan kosong */
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [initialShorts]);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -478,6 +517,14 @@ export default function ShortsFeed({ shorts }: { shorts: Video[] }) {
     },
     [],
   );
+
+  if (loading && shorts.length === 0) {
+    return (
+      <div className="grid h-[calc(100dvh-7.5rem)] place-items-center">
+        <span className="h-8 w-8 animate-spin rounded-full border-2 border-white/20 border-t-white" />
+      </div>
+    );
+  }
 
   return (
     <div

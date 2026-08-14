@@ -7,31 +7,13 @@ export const dynamic = "force-dynamic";
 export default async function Shorts() {
   let shorts: Video[] = [];
 
-  try {
-    const [{ items: feed }, { items: local }] = await Promise.all([
-      getFeed(),
-      getLocalShorts(),
-    ]);
-    shorts = [
-      ...local.map((v) => ({ ...v, kind: "local" })),
-      ...feed.map((v) => ({ ...v, kind: "yt" })),
-    ];
-  } catch {
-    /* fallback kosong */
-  }
+  const [feed, local] = await Promise.all([
+    getFeed().catch(() => null),
+    getLocalShorts().catch(() => null),
+  ]);
 
-  if (shorts.length === 0) {
-    return (
-      <div className="grid h-[calc(100dvh-7.5rem)] place-items-center px-4 text-center">
-        <div>
-          <p className="text-lg text-white/70">Belum ada Shorts tersedia.</p>
-          <a href="/" className="mt-2 inline-block text-sm text-cyan-300 underline">
-            Kembali ke beranda
-          </a>
-        </div>
-      </div>
-    );
-  }
+  if (local?.items) shorts.push(...local.items);
+  if (feed?.items) shorts.push(...feed.items);
 
-  return <ShortsFeed shorts={shorts} />;
+  return <ShortsFeed initialShorts={shorts} />;
 }
